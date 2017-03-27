@@ -7,6 +7,7 @@ sub count  { $_[0]->{index} + 1 }
 sub even   { $_[0]->{index} % 2 ? 0 : 1 }
 sub first  { $_[0]->{index} == 0 }
 sub index  { $_[0]->{index} }
+sub key    { $_[0]->{key} }
 sub last   { $_[0]->{index} + 1 == @{$_[0]->{items}} }
 sub max    { $_[0]->size - 1 }
 sub odd    { $_[0]->{index} % 2 ? 1 : 0 }
@@ -52,9 +53,10 @@ sub _iterate {
   local $ITERATOR = $self;
 
 LOOP:
-  for (@{$self->{items}}) {
-    local $self->{item} = $_;
+  for my $item (@{$self->{items}}) {
     $self->{index}++;
+    local $self->{item} = $item;
+    local $self->{key} = $self->{map} ? $item : $self->{index};
     $bs .= $cb->();
   }
 
@@ -80,7 +82,7 @@ Mojolicious::Plugin::Loop - Loop plugin for Mojolicious
 
   %= loop [1,2,3,4], begin
   ---
-  val: <%= loop->val %> [<%= $_ %>]
+  key/val: <%= loop->key %>/<%= loop->val %>
   count: <%= loop->index %> + 1 = <%= loop->count %> (index + 1)
   size: <%= loop->max %> + 1 = <%= loop->size %> (max + 1)
   prev: <%= loop->peek(-1) // 'undef' %> (peek -1)
@@ -93,7 +95,7 @@ Mojolicious::Plugin::Loop - Loop plugin for Mojolicious
 
   %= loop {a => 1, b => 2, c => 3}, begin
   ---
-  val: <%= loop->val %> [<%= $_ %>]
+  key/val: <%= loop->key %>/<%= loop->val %>
   count: <%= loop->index %> + 1 = <%= loop->count %> (index + 1)
   size: <%= loop->max %> + 1 = <%= loop->size %> (max + 1)
   prev: <%= loop->peek(-1) // 'undef' %> (peek -1)
@@ -106,7 +108,8 @@ Mojolicious::Plugin::Loop - Loop plugin for Mojolicious
 
 =head1 DESCRIPTION
 
-L<Mojolicious::Plugin::Loop> is a plugin with helpers for iterating over data structures.
+L<Mojolicious::Plugin::Loop> is a plugin with helpers for iterating over either array,
+hashes or array/hash-like structures.
 
 =head1 TEMPLATE METHODS
 
@@ -133,6 +136,14 @@ Returns true if L</index> is zero.
   $int = $loop->index;
 
 Returns the index number, starting on 0.
+
+=head2 key
+
+  $str = $self->key; # hash
+  $int = $self->key; # array
+
+Returns L</index> if iterating over an array or the current key if iterating
+over a hash.
 
 =head2 last
 

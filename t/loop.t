@@ -12,7 +12,7 @@ my $t = Test::Mojo->new;
 $t->get_ok('/array')->content_is(<<'HERE');
 
 ---
-val: 24 [24]
+key/val: 0/24
 count: 0 + 1 = 1 (index + 1)
 size: 2 + 1 = 3 (max + 1)
 prev: undef (peek -1)
@@ -23,7 +23,7 @@ first: yes
 last: no
 
 ---
-val: 25 [25]
+key/val: 1/25
 count: 1 + 1 = 2 (index + 1)
 size: 2 + 1 = 3 (max + 1)
 prev: 24 (peek -1)
@@ -34,7 +34,7 @@ first: no
 last: no
 
 ---
-val: 26 [26]
+key/val: 2/26
 count: 2 + 1 = 3 (index + 1)
 size: 2 + 1 = 3 (max + 1)
 prev: 25 (peek -1)
@@ -48,7 +48,7 @@ HERE
 $t->get_ok('/hash')->content_is(<<'HERE');
 
 ---
-val: 24 [x]
+key/val: x/24
 count: 0 + 1 = 1 (index + 1)
 size: 2 + 1 = 3 (max + 1)
 prev: undef (peek -1)
@@ -59,7 +59,7 @@ first: yes
 last: no
 
 ---
-val: 25 [y]
+key/val: y/25
 count: 1 + 1 = 2 (index + 1)
 size: 2 + 1 = 3 (max + 1)
 prev: x (peek -1)
@@ -70,7 +70,7 @@ first: no
 last: no
 
 ---
-val: 26 [z]
+key/val: z/26
 count: 2 + 1 = 3 (index + 1)
 size: 2 + 1 = 3 (max + 1)
 prev: y (peek -1)
@@ -87,7 +87,7 @@ __DATA__
 @@ index.html.ep
 %= loop $v, begin
 ---
-val: <%= loop->val %> [<%= $_ %>]
+key/val: <%= loop->key %>/<%= loop->val %>
 count: <%= loop->index %> + 1 = <%= loop->count %> (index + 1)
 size: <%= loop->max %> + 1 = <%= loop->size %> (max + 1)
 prev: <%= loop->peek(-1) // 'undef' %> (peek -1)
