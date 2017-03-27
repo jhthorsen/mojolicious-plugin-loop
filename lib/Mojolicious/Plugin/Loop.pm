@@ -62,3 +62,89 @@ LOOP:
 }
 
 1;
+
+=encoding utf8
+
+=head1 NAME
+
+Mojolicious::Plugin::Loop - Loop plugin for Mojolicious
+
+=head1 SYNOPSIS
+
+=head2 Application
+
+  use Mojolicious::Lite;
+  plugin 'loop';
+
+=head2 Template
+
+  %= loop [1,2,3,4], begin
+  ---
+  val: <%= loop->val %> [<%= $_ %>]
+  count: <%= loop->index %> + 1 = <%= loop->count %> (index + 1)
+  size: <%= loop->max %> + 1 = <%= loop->size %> (max + 1)
+  prev: <%= loop->peek(-1) // 'undef' %> (peek -1)
+  next: <%= loop->peek(1) // 'undef' %> (peek +1)
+  parity: <%= loop->parity %>
+  odd/even: <%= loop->odd ? 'odd' : loop->even ? 'even' : 'unknown' %>
+  first: <%= loop->first ? 'yes' : 'no' %>
+  last: <%= loop->last ? 'yes' : 'no' %>
+  % end
+
+  %= loop {a => 1, b => 2, c => 3}, begin
+  ---
+  val: <%= loop->val %> [<%= $_ %>]
+  count: <%= loop->index %> + 1 = <%= loop->count %> (index + 1)
+  size: <%= loop->max %> + 1 = <%= loop->size %> (max + 1)
+  prev: <%= loop->peek(-1) // 'undef' %> (peek -1)
+  next: <%= loop->peek(1) // 'undef' %> (peek +1)
+  parity: <%= loop->parity %>
+  odd/even: <%= loop->odd ? 'odd' : loop->even ? 'even' : 'unknown' %>
+  first: <%= loop->first ? 'yes' : 'no' %>
+  last: <%= loop->last ? 'yes' : 'no' %>
+  % end
+
+=head1 DESCRIPTION
+
+L<Mojolicious::Plugin::Loop> is a plugin with helpers for iterating over data structures.
+
+=head1 METHODS
+
+=head2 count
+
+=head2 even
+
+=head2 first
+
+=head2 index
+
+=head2 last
+
+=head2 max
+
+=head2 odd
+
+=head2 parity
+
+=head2 peek
+
+=head2 register
+
+=head2 size
+
+=head2 val
+
+=head1 AUTHOR
+
+Jan Henning Thorsen
+
+=head1 COPYRIGHT AND LICENSE
+
+This program is free software, you can redistribute it and/or modify it under
+the terms of the Artistic License version 2.0.
+
+=head1 SEE ALSO
+
+L<Template::Iterator>.
+
+=cut
