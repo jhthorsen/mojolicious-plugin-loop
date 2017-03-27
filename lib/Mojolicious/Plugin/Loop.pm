@@ -108,31 +108,89 @@ Mojolicious::Plugin::Loop - Loop plugin for Mojolicious
 
 L<Mojolicious::Plugin::Loop> is a plugin with helpers for iterating over data structures.
 
-=head1 METHODS
+=head1 TEMPLATE METHODS
 
 =head2 count
 
+  $int = $loop->count;
+
+Returns L</index> + 1.
+
 =head2 even
+
+  $bool = $loop->even;
+
+Returns true if L</count> is 2, 4, 6, ...
 
 =head2 first
 
+  $bool = $loop->first;
+
+Returns true if L</index> is zero.
+
 =head2 index
+
+  $int = $loop->index;
+
+Returns the index number, starting on 0.
 
 =head2 last
 
+  $bool = $loop->last;
+
+Returns true if L</index> is L</max>.
+
 =head2 max
+
+  $int = $loop->max;
+
+Returns L</size> - 1.
 
 =head2 odd
 
+  $bool = $loop->odd;
+
+Returns true if L</count> is 1, 3, 5, ...
+
 =head2 parity
+
+  $str = $loop->parity;
+
+Returns either the string "odd" or "even".
 
 =head2 peek
 
-=head2 register
+  $any = $loop->peek($index);
+  $any = $loop->peek(-3);
+
+Returns either the value in the array, or the key in the hash, relative to the
+current item. Examples:
+
+  # [24, 25, 26]
+  $loop->index == 2
+  $loop->peek(-1) == 25
+
+  # {a => 24, b => 25, c => 26}
+  $loop->index == 1
+  $loop->peek(1) == "c"
 
 =head2 size
 
+  $int = $loop->size;
+
+Returns the number of items in the array, or number of keys in the hash.
+
 =head2 val
+
+  $any = $loop->val;
+
+Returns the value of the current item in the array or hash.
+
+=head1 METHODS
+
+=head2 register
+
+Used to register the plugin in the L<Mojolicious> application.
 
 =head1 AUTHOR
 
