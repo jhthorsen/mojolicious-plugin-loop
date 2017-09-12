@@ -1,6 +1,8 @@
 package Mojolicious::Plugin::Loop;
 use Mojo::Base 'Mojolicious::Plugin';
 
+our $VERSION = '0.01';
+
 our $ITERATOR;
 
 sub count  { $_[0]->{index} + 1 }
@@ -57,7 +59,7 @@ LOOP:
     $self->{index}++;
     local $self->{item} = $item;
     local $self->{key} = $self->{map} ? $item : $self->{index};
-    $bs .= $cb->();
+    $bs .= $cb->($item, $self->{index});
   }
 
   return $bs;
@@ -109,7 +111,9 @@ Mojolicious::Plugin::Loop - Loop plugin for Mojolicious
 =head1 DESCRIPTION
 
 L<Mojolicious::Plugin::Loop> is a plugin with helpers for iterating over either array,
-hashes or array/hash-like structures.
+hashes or array/hash-like structures. 
+
+NOTE: THIS MODULE IS EXPERIMENTAL AND THE API MAY CHANGE AT ANY TIME
 
 =head1 TEMPLATE METHODS
 
@@ -206,6 +210,8 @@ Used to register the plugin in the L<Mojolicious> application.
 =head1 AUTHOR
 
 Jan Henning Thorsen
+
+Marcus Ramberg
 
 =head1 COPYRIGHT AND LICENSE
 
