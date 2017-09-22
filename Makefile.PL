@@ -2,7 +2,7 @@
 use ExtUtils::MakeMaker;
 WriteMakefile(
   NAME => 'Mojolicious::Plugin::Loop',
-  AUTHOR => 'Jan Henning Thorsen <jhthorsen@cpan.org>',
+  AUTHOR => 'Marcus Ramberg <marcus.ramberg@gmail.com>',
   LICENSE => 'artistic_2',
   ABSTRACT_FROM => 'lib/Mojolicious/Plugin/Loop.pm',
   VERSION_FROM => 'lib/Mojolicious/Plugin/Loop.pm',
@@ -11,7 +11,7 @@ WriteMakefile(
     resources => {
       bugtracker => 'https://github.com/jhthorsen/mojolicious-plugin-loop/issues',
       homepage => 'https://github.com/jhthorsen/mojolicious-plugin-loop',
-      repository => 'https://github.com/jhthorsen/mojolicious-plugin-loop',
+      repository => 'https://github.com/jhthorsen/mojolicious-plugin-loop.git',
     },
   },
   BUILD_REQUIRES => {
