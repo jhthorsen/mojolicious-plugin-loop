@@ -77,6 +77,16 @@ TEMPLATE METHODS
 
     Returns "size" - 1.
 
+  next
+      $bool = $self->next;
+
+    Move the iterator forward one step. Example:
+
+      % my $i = loop [1, 2, 3];
+      % while ($i->next) {
+      %= $i->val;
+      % }
+
   odd
       $bool = $loop->odd;
 
@@ -101,6 +111,11 @@ TEMPLATE METHODS
       # {a => 24, b => 25, c => 26}
       $loop->index == 1
       $loop->peek(1) == "c"
+
+  reset
+      $self = $self->reset;
+
+    Used to reset the iterator.
 
   size
       $int = $loop->size;
