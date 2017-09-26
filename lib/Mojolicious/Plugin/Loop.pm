@@ -5,14 +5,23 @@ our $VERSION = '0.02';
 
 our $ITERATOR;
 
-sub count  { $_[0]->{index} + 1 }
-sub even   { $_[0]->{index} % 2 ? 0 : 1 }
-sub first  { $_[0]->{index} == 0 }
-sub index  { $_[0]->{index} }
-sub key    { $_[0]->{key} }
-sub last   { $_[0]->{index} + 1 == @{$_[0]->{items}} }
-sub max    { $_[0]->size - 1 }
-sub odd    { $_[0]->{index} % 2 ? 1 : 0 }
+sub count { $_[0]->{index} + 1 }
+sub even  { $_[0]->{index} % 2 ? 0 : 1 }
+sub first { $_[0]->{index} == 0 }
+sub index { $_[0]->{index} }
+sub key   { $_[0]->{key} }
+sub last  { $_[0]->{index} + 1 == @{$_[0]->{items}} }
+sub max   { $_[0]->size - 1 }
+
+sub next {
+  my $self = shift;
+  return 0 if @{$self->{items}} <= ++$self->{index};
+  $self->{item} = $self->{items}[$self->{index}];
+  $self->{key} = $self->{map} ? $self->{item} : $self->{index};
+  return 1;
+}
+
+sub odd    { $_[0]->{index} % 2 ? 1     : 0 }
 sub parity { $_[0]->{index} % 2 ? 'odd' : 'even' }
 
 sub peek {
@@ -21,6 +30,7 @@ sub peek {
   return $index < 0 ? undef : $_[0]->{items}[$index];
 }
 
+sub reset { $_[0]->{index} = -1; $_[0] }
 sub size { int @{$_[0]->{items}} }
 sub val { $_[0]->{map} ? $_[0]->{map}{$_[0]->{item}} : $_[0]->{item} }
 
@@ -51,15 +61,13 @@ sub _iterate {
     @$self{qw(items)} = $data->to_array;
   }
 
-  $self->{index} = -1;
+  $self->reset;
+  return $self unless $cb;
   local $ITERATOR = $self;
 
 LOOP:
-  for my $item (@{$self->{items}}) {
-    $self->{index}++;
-    local $self->{item} = $item;
-    local $self->{key} = $self->{map} ? $item : $self->{index};
-    $bs .= $cb->($item, $self->{index});
+  while ($self->next) {
+    $bs .= $cb->($self->{item}, $self->{index});
   }
 
   return $bs;
@@ -161,6 +169,17 @@ Returns true if L</index> is L</max>.
 
 Returns L</size> - 1.
 
+=head2 next
+
+  $bool = $self->next;
+
+Move the iterator forward one step. Example:
+
+  % my $i = loop [1, 2, 3];
+  % while ($i->next) {
+  %= $i->val;
+  % }
+
 =head2 odd
 
   $bool = $loop->odd;
@@ -188,6 +207,12 @@ current item. Examples:
   # {a => 24, b => 25, c => 26}
   $loop->index == 1
   $loop->peek(1) == "c"
+
+=head2 reset
+
+  $self = $self->reset;
+
+Used to reset the iterator.
 
 =head2 size
 
