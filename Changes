@@ -2,6 +2,7 @@ Revision history for perl distribution Mojolicious-Plugin-Loop
 
 0.03 Not Released
  - loop() can also return the iterator
+ - Add Mojolicious as a dependency #1
 
 0.02 2017-09-22T14:55:36+0200
  - Attempting re-release as 0.01 was missing changes from git
