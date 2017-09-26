@@ -31,13 +31,13 @@ sub register {
     loop => sub {
       my ($c, $data, $cb) = @_;
       return $ITERATOR if @_ == 1;
-      return Mojolicious::Plugin::Loop->_iterate($c->stash, $data, $cb);
+      return Mojolicious::Plugin::Loop->_iterate($data, $cb);
     }
   );
 }
 
 sub _iterate {
-  my ($class, $stash, $data, $cb) = @_;
+  my ($class, $data, $cb) = @_;
   my $bs = Mojo::ByteStream->new;
   my $self = bless {cb => $cb}, $class;
 
